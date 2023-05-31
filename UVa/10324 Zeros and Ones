@@ -1,3 +1,12 @@
+/*
+UVa 10324 Zeros and Ones 
+C++
+Source : https://vjudge.net/problem/UVA-10324
+解題想法 : 
+這題是前綴和相關的題目，以pre[i]紀錄到第i個數之前的和，用以記錄目前累計幾個'1'，便可將該值與該區間做比對，得出該區間是否全為'1'或'0'。
+*/
+
+
 #include <iostream>
 
 using namespace std;
@@ -5,19 +14,22 @@ using namespace std;
 int main(){
     string s;
     int times, first, second, Cases = 0;
-    while(cin>>s){
-        cout<<"Case "<<++Cases<<':'<<endl;
+    while(cin >> s){
+        cout << "Case " << ++Cases << ':' << endl;
         int pre[s.size()];
-        pre[0] = s[0]-'0';
-        for(int i = 1;i<s.size();i++){
-            pre[i] = pre[i-1] + s[i]-'0';
+        pre[0] = s[0] - '0';
+        for(int i = 1; i < s.size(); i++){
+            pre[i] = pre[i - 1] + s[i] - '0';
         }
-        cin>>times;
+        cin >> times;
         while(times--){
-            cin>>first>>second;
-            if(first == second) cout<<"Yes"<<endl;
-            else if((pre[max(first, second)]-pre[min(first, second)])%(max(first, second)-min(first, second))==0) cout<<"Yes"<<endl;
-            else cout<<"No"<<endl;
+            cin >> first >> second;
+            if(first == second)
+                cout << "Yes" << endl;
+            else if((pre[max(first, second)] - pre[min(first, second)] + (s[min(first, second)] - '0')) % (max(first, second) - min(first, second) + 1) == 0)
+                cout << "Yes" << endl;
+            else
+                cout << "No" << endl;
         }
     }
     return 0;
