@@ -1,0 +1,47 @@
+// TIOJ 1618
+// 搜尋 單調隊列
+// 在任何時刻能看到的大樓，其高度必定由左往右遞減
+// 用pop_front維護視力、pop_back維護高度遞減
+
+// References : https://koios1143.github.io/2020/09/12/TOJ169/
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+long long num, dist, height[500005], beauty[500005];
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> num >> dist;
+    for (int i = 1; i <= num; i++)
+        cin >> height[i];
+
+    for (int i = 1; i <= num; i++)
+        cin >> beauty[i];
+
+    deque<pair<long long, long long>> dq;
+    long long current = 0, ans = INT_MIN, building = 0;
+
+    for (long long i = 1; i <= num; i++){
+        while (!dq.empty() && dq[0].first <= i - dist){
+            current -= beauty[dq[0].first];
+            dq.pop_front();
+        }
+        while (!dq.empty() && dq[dq.size() - 1].second <= height[i]){
+            current -= beauty[dq[dq.size() - 1].first];
+            dq.pop_back();
+        }
+        current += beauty[i];
+        dq.emplace_back(i, height[i]);
+        if(current > ans){
+            ans = current;
+            building = i;
+        }
+    }
+
+    cout << building << " " << ans << '\n';
+}
