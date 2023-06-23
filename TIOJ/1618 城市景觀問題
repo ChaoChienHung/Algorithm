@@ -1,0 +1,59 @@
+/*
+TIOJ 1618 城市景觀問題
+C++
+Source : https://tioj.ck.tp.edu.tw/problems/1618
+解題想法 : 
+一棟建築物被看到的充要條件是 :
+    1. 該建築物跟小蚯蚓的距離要在k以內
+    2. 該建築物到小蚯蚓之間任何建築物都只能比該建築物低
+
+因此，我們可以以Deque儲存目前滿足充要條件的建築物，並計算其view(p)值，若為最大值，則將之記錄起來。
+此方法可行之主要原因為 : 
+    1. 我們可以以Deque將k範圍外的建築物從Front去除，因為我們的Sliding Window只往右走，因此若該建築物已經超出當前建築物的範圍，則也必定超出後續建築物的範圍
+    2. 因為滿足條件之建築物只能比任何位於當前建築物之間的所有建築物(包括當前建築物)高，因此我們可以直接把不滿足之建築物從End移除，因為若該建築物並沒有比當前
+       建築物高，則在後續的比較也必定因有更高的建築物擋在前而被移除
+
+References : 
+    1. https://emanlaicepsa.github.io/2020/12/14/0-23/
+    2. https://koios1143.github.io/2020/09/12/TOJ169/
+*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+long long num, dist, height[500005], beauty[500005];
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> num >> dist;
+    for (int i = 1; i <= num; i++)
+        cin >> height[i];
+
+    for (int i = 1; i <= num; i++)
+        cin >> beauty[i];
+
+    deque<pair<long long, long long>> dq;
+    long long current = 0, ans = INT_MIN, building = 0;
+
+    for (long long i = 1; i <= num; i++){
+        while (!dq.empty() && dq[0].first <= i - dist){
+            current -= beauty[dq[0].first];
+            dq.pop_front();
+        }
+        while (!dq.empty() && dq[dq.size() - 1].second <= height[i]){
+            current -= beauty[dq[dq.size() - 1].first];
+            dq.pop_back();
+        }
+        current += beauty[i];
+        dq.emplace_back(i, height[i]);
+        if(current > ans){
+            ans = current;
+            building = i;
+        }
+    }
+
+    cout << building << " " << ans << '\n';
+}
