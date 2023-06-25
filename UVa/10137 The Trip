@@ -4,6 +4,10 @@ Language : C++
 Source : https://vjudge.net/problem/UVA-10324
 解題想法 : 
 這題是前綴和相關的題目，以pre[i]紀錄到第i個數之前的和，用以記錄目前累計幾個'1'，便可將該值與該區間做比對，得出該區間是否全為'1'或'0'。
+
+References : 
+    1. http://kaibro.logdown.com/posts/256635-uva-10137-the-trip
+
 */
 
 #include <iostream>
@@ -37,5 +41,3 @@ int main(){
     }
     return 0;
 }
-
-// Reference : http://kaibro.logdown.com/posts/256635-uva-10137-the-trip
