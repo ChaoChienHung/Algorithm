@@ -1,0 +1,33 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+#include <algorithm>
+
+using namespace std;
+
+int main(){
+    int person;
+    double money;
+    while(cin >> person && person!=0){
+        int record[person];
+        int sum = 0;
+        for (int i = 0; i < person; ++i) {
+            cin>>money;
+            record[i] = (int)round(money*100);
+            sum += record[i];
+        }
+        sort(record, record+person);
+        int average = sum / person, remainder = sum % person;
+        double answer = 0.0;
+        for (int i = person-1; i >= person-remainder; --i) {
+            answer += abs(record[i] - average - 1);
+        }
+        for (int i = person-remainder-1; i >-1 ; --i) {
+            answer += abs(record[i] - average);
+        }
+        cout<<"$"<<fixed<<setprecision(2)<<answer/200<<endl;
+    }
+    return 0;
+}
+
+// Reference : http://kaibro.logdown.com/posts/256635-uva-10137-the-trip
