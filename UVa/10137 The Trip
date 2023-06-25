@@ -1,9 +1,15 @@
 /*
 UVa 10137 The Trip
 Language : C++
-Source : https://vjudge.net/problem/UVA-10324
+Source : https://vjudge.net/problem/UVA-10137
 解題想法 : 
-這題是前綴和相關的題目，以pre[i]紀錄到第i個數之前的和，用以記錄目前累計幾個'1'，便可將該值與該區間做比對，得出該區間是否全為'1'或'0'。
+輸入時分成整數和小數兩部分處理，把浮點數乘以100轉成int
+然後把每個人的總和拿去 mod N，得到的值代表要多付或著少付的人數
+由於需要少給的一定是當初付比較多錢的，所以可以由大到小排序後，依序算出每個人的轉移
+最後因為總和是轉移量的兩倍(因為會重複計算)，而且一開始有乘以100，所以答案需要除以200
+
+需要注意的點 : 
+1. 有浮點數誤差的問題
 
 References : 
     1. http://kaibro.logdown.com/posts/256635-uva-10137-the-trip
@@ -20,24 +26,24 @@ using namespace std;
 int main(){
     int person;
     double money;
-    while(cin >> person && person!=0){
+    while(cin >> person && person != 0){
         int record[person];
         int sum = 0;
-        for (int i = 0; i < person; ++i) {
-            cin>>money;
-            record[i] = (int)round(money*100);
+        for (int i = 0; i < person; i++) {
+            cin >> money;
+            record[i] = (int)round(money * 100);
             sum += record[i];
         }
-        sort(record, record+person);
+        sort(record, record + person);
         int average = sum / person, remainder = sum % person;
         double answer = 0.0;
-        for (int i = person-1; i >= person-remainder; --i) {
+        for (int i = person - 1; i >= person - remainder; i--) {
             answer += abs(record[i] - average - 1);
         }
         for (int i = person-remainder-1; i >-1 ; --i) {
             answer += abs(record[i] - average);
         }
-        cout<<"$"<<fixed<<setprecision(2)<<answer/200<<endl;
+        cout << "$" << fixed << setprecision(2) << answer / 200 << endl;
     }
     return 0;
 }
