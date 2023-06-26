@@ -1,3 +1,9 @@
+/*
+UVa 10044 Erdos Number
+Language : C++
+Source : https://vjudge.net/problem/UVA-10044
+*/
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
