@@ -1,0 +1,96 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
+
+struct person{
+    string name;
+    int no;
+    vector<struct person*> connection;
+    person(string a){
+        name = a;
+        no = -1;
+    }
+};
+
+int main(){
+    int cases, title, list, no = 1;
+    cin >> cases;
+    string bin, paper, name;
+    vector<string> nameList, Exist;
+    vector<person*> record;
+    while (cases--) {
+        cin >> title >> list;
+        getline(cin, bin);
+        record.clear();
+        Exist.clear();
+        record.push_back(new person("Erdos, P."));
+        record[0] -> no = 0;
+        Exist.emplace_back("Erdos, P.");
+
+        for (int i = 0; i < title; ++i) {
+            getline(cin, paper);
+            string temp;
+            nameList.clear();
+            for (int j = 0; j < paper.size(); ++j) {
+                temp += paper[j];
+                if (paper[j] == '.' && (paper[j + 1] == ',' || paper[j + 1] == ':')) {
+                    if (find(Exist.begin(), Exist.end(), temp) == Exist.end()) {
+                        person *newPerson = new person(temp);
+                        record.push_back(newPerson);
+                        Exist.push_back(temp);
+                    }
+                    nameList.push_back(temp);
+                    temp = "";
+                    j += 2;
+                }
+            }
+            for (int j = 0; j < nameList.size(); ++j) {
+                int pos1 = find(Exist.begin(), Exist.end(), nameList[j]) - Exist.begin();
+                for (int k = 0; k < nameList.size(); ++k) {
+                    if (j == k)
+                        continue;
+                    int pos2 = find(Exist.begin(), Exist.end(), nameList[k]) - Exist.begin();
+                    if (find(record[pos1] -> connection.begin(), record[pos1] -> connection.end(), record[pos2]) == record[pos1] -> connection.end())
+                        record[pos1] -> connection.push_back(record[pos2]);
+                }
+            }
+
+        }
+        queue<person*> BFS;
+        vector<string> used = {"Erdos, P."};
+        BFS.push(record[0]);
+        while (!BFS.empty()) {
+            person* temp = BFS.front();
+            for (int i = 0;i < temp -> connection.size(); i++) {
+                if (find(used.begin(), used.end(), temp -> connection[i] -> name) == used.end()) {
+                    BFS.push(temp -> connection[i]);
+                    used.push_back(temp -> connection[i] -> name);
+                    temp -> connection[i] -> no = temp -> no + 1;
+                }
+            }
+            BFS.pop();
+        }
+        used.clear();
+        for (int i = 0; i < list; ++i) {
+            getline(cin, name);
+            used.push_back(name);
+        }
+        cout << "Scenario " << no++ << endl;
+        for (int i = 0; i < used.size(); ++i) {
+            if (find(Exist.begin(), Exist.end(), used[i]) == Exist.end())
+                cout << used[i] << " infinity" << endl;
+            else {
+                int pos = find(Exist.begin(), Exist.end(), used[i]) - Exist.begin();
+                cout << record[pos] -> name << ' ';
+                if (record[pos] -> no == -1)
+                    cout << "infinity" << endl;
+                else
+                    cout << record[pos] -> no << endl;
+            }
+        }
+    }
+    return 0;
+}
