@@ -24,12 +24,12 @@ struct person{
 int main(){
     int cases, title, list, no = 1;
     cin >> cases;
-    string bin, paper, name;
+    string paper, name;
     vector<string> nameList, Exist;
     vector<person*> record;
     while (cases--) {
         cin >> title >> list;
-        getline(cin, bin);
+        cin.ignore();
         record.clear();
         Exist.clear();
         record.push_back(new person("Erdos, P."));
