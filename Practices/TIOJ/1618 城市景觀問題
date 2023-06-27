@@ -41,22 +41,22 @@ int main(){
     deque<pair<long long, long long>> dq;
     long long current = 0, ans = INT_MIN, building = 0;
 
-    for (long long i = 1; i <= num; i++){
-        while (!dq.empty() && dq[0].first <= i - dist){
+    for (long long i = 1; i <= num; i++) {
+        while (!dq.empty() && dq[0].first <= i - dist) {
             current -= beauty[dq[0].first];
             dq.pop_front();
         }
-        while (!dq.empty() && dq[dq.size() - 1].second <= height[i]){
+        while (!dq.empty() && dq[dq.size() - 1].second <= height[i]) {
             current -= beauty[dq[dq.size() - 1].first];
             dq.pop_back();
         }
         current += beauty[i];
         dq.emplace_back(i, height[i]);
-        if(current > ans){
+        if (current > ans) {
             ans = current;
             building = i;
         }
     }
 
-    cout << building << " " << ans << '\n';
+    cout << building << " " << ans << endl;
 }
