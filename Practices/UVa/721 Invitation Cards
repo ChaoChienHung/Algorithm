@@ -1,0 +1,69 @@
+/*
+UVa 721 Invitation Cards
+Language : C++
+Source : https://vjudge.net/problem/UVA-721
+解題想法 : 
+
+References : 
+    1. https://morris821028.github.io/2014/08/28/oj/uva/uva-721/
+
+*/
+
+#include <bits/stdc++.h>
+#define Max 1048576
+
+using namespace std;
+
+vector<pair<int, long long>> graph[Max], reverse_graph[Max];
+
+long long Distance[Max];
+int inQueue[Max];
+
+long long ShortestPathFasterAlgorithm(int source, int vertices, vector<pair<int, long long>> graph[]) {
+    for (int i = 0; i < vertices; i++) {
+        Distance[i] = INT_MAX, inQueue[i] = 0;
+    }
+    queue<int> Queue;
+    int currentNode, connectedNode;
+    long long weight;
+    Queue.push(source), Distance[source] = 0;
+    while (!Queue.empty()) {
+        currentNode = Queue.front(), Queue.pop();
+        inQueue[currentNode] = 0;
+        for (int i = 0; i < graph[currentNode].size(); i++) {
+            connectedNode = graph[currentNode][i].first, weight = graph[currentNode][i].second;
+            if (Distance[connectedNode] > Distance[currentNode] + weight) {
+                Distance[connectedNode] = Distance[currentNode] + weight;
+                if (!inQueue[connectedNode]) {
+                    Queue.push(connectedNode), inQueue[connectedNode] = 1;
+                }
+            }
+        }
+    }
+    long long total = 0;
+    for (int i = 0; i < vertices; i++) 
+        total += Distance[i];
+    return total;
+}
+int main() {
+    int testcase, vertices, edges;
+    cin >> testcase;
+    while (testcase--) {
+        cin >> vertices >> edges;
+        for (int i = 0; i < vertices; i++) {
+            graph[i].clear(), reverse_graph[i].clear();
+        }
+        for (int i = 0; i < edges; i++) {
+            int head, tail, weight;
+            cin >> head >> tail >> weight;
+            head--, tail--;
+            graph[head].emplace_back(tail, weight);
+            reverse_graph[tail].emplace_back(head, weight);
+        }
+        long long total = 0;
+        total += ShortestPathFasterAlgorithm(0, vertices, graph);
+        total += ShortestPathFasterAlgorithm(0, vertices, reverse_graph);
+        cout << total << endl;
+    }
+    return 0;
+}
