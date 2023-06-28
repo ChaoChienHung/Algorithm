@@ -40,6 +40,7 @@ long long ShortestPathFasterAlgorithm(int source, int vertices, vector<pair<int,
     // Insert the source into the queue and set its distance to 0
     myHeap.emplace(0, source), Distance[source] = 0;
 
+    // Dijkstra Algorithm
     while (!myHeap.empty()) {
         current = myHeap.top(), myHeap.pop();
         currentNode = current.second;
