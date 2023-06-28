@@ -33,21 +33,22 @@ long long ShortestPathFasterAlgorithm(int source, int vertices, vector<pair<int,
         Distance[i] = INT_MAX, inQueue[i] = 0;
     }
     priority_queue<pair<int, int>> myHeap;
-    pair<int, int> currentNode;
-    int connectedNode;
+    pair<int, int> current;
+    int connectedNode, currentNode;
     long long weight;
 
     // Insert the source into the queue and set its distance to 0
     myHeap.emplace(0, source), Distance[source] = 0;
 
     while (!myHeap.empty()) {
-        currentNode = myHeap.top(), myHeap.pop();
-        inQueue[currentNode.second] = 0;
+        current = myHeap.top(), myHeap.pop();
+        currentNode = current.second;
+        inQueue[currentNode] = 0;
 
-        for (int i = 0; i < graph[currentNode.second].size(); i++) {
-            connectedNode = graph[currentNode.second][i].first, weight = graph[currentNode.second][i].second;
-            if (Distance[connectedNode] > Distance[currentNode.second] + weight) {
-                Distance[connectedNode] = Distance[currentNode.second] + weight;
+        for (int i = 0; i < graph[currentNode].size(); i++) {
+            connectedNode = graph[currentNode][i].first, weight = graph[currentNode][i].second;
+            if (Distance[connectedNode] > Distance[currentNode] + weight) {
+                Distance[connectedNode] = Distance[currentNode] + weight;
                 if (!inQueue[connectedNode]) {
                     myHeap.emplace(Distance[connectedNode], connectedNode), inQueue[connectedNode] = 1;
                 }
