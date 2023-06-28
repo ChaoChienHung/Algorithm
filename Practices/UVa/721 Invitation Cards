@@ -3,7 +3,7 @@ UVa 721 Invitation Cards
 Language : C++
 Source : https://vjudge.net/problem/UVA-721
 解題想法 : 
-對一開始給定的圖，從編號 1 做一次 SSSP (單源最短路徑)，隨後再對題目給的反向圖做一次 SSSP 即可以得到所有點到編號 1 的最短路徑。
+對一開始給定的圖，從編號 1 做一次 SSSP (單源最短路徑 Single Source Shortest Path)，隨後再對題目給的反向圖做一次 SSSP 即可以得到所有點到編號 1 的最短路徑。
 
 References : 
     1. https://morris821028.github.io/2014/08/28/oj/uva/uva-721/
@@ -12,7 +12,7 @@ References :
 */
 
 #include <bits/stdc++.h>
-#define Max 1048576
+#define Max 1000000 + 5
 
 using namespace std;
 
