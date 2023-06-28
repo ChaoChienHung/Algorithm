@@ -2,10 +2,10 @@
 UVa 721 Invitation Cards
 Language : C++
 Source : https://vjudge.net/problem/UVA-721
-解題想法 : 
+解題想法 :
 對一開始給定的圖，從編號 1 做一次 SSSP (單源最短路徑 Single Source Shortest Path)，隨後再對題目給的反向圖做一次 SSSP 即可以得到所有點到編號 1 的最短路徑。
 
-References : 
+References :
     1. https://morris821028.github.io/2014/08/28/oj/uva/uva-721/
     2. http://alrightchiu.github.io/SecondRound/single-source-shortest-pathdijkstras-algorithm.html
     3. http://alrightchiu.github.io/SecondRound/shortest-pathintrojian-jie.html
@@ -13,12 +13,12 @@ References :
 */
 
 #include <bits/stdc++.h>
-#define Max 1000000 + 5
+#define Max (1000000 + 5)
 
 using namespace std;
 
 // Graph & Reverse Graph : Adjacency List
-vector<pair<int, long long>> graph[Max], reverse_graph[Max];
+vector<pair<int, long long>> Graph[Max], reverseGraph[Max];
 
 // Distance : Table used to record the distance from source to other vertices
 // inQueue : The queue used to see whether the vertice is currently in the queue or not
@@ -26,35 +26,36 @@ long long Distance[Max];
 int inQueue[Max];
 
 long long ShortestPathFasterAlgorithm(int source, int vertices, vector<pair<int, long long>> graph[]) {
-    
+
     // Initialize the distances to all other vertices to infinity
     // There is no vertex in the queue yet, so set all the values in the inQueue to 0
     for (int i = 0; i < vertices; i++) {
         Distance[i] = INT_MAX, inQueue[i] = 0;
     }
-    queue<int> Queue;
-    int currentNode, connectedNode;
+    priority_queue<pair<int, int>> myHeap;
+    pair<int, int> currentNode;
+    int connectedNode;
     long long weight;
 
     // Insert the source into the queue and set its distance to 0
-    Queue.push(source), Distance[source] = 0;
-    
-    while (!Queue.empty()) {
-        currentNode = Queue.front(), Queue.pop();
-        inQueue[currentNode] = 0; 
+    myHeap.emplace(0, source), Distance[source] = 0;
 
-        for (int i = 0; i < graph[currentNode].size(); i++) {
-            connectedNode = graph[currentNode][i].first, weight = graph[currentNode][i].second;
-            if (Distance[connectedNode] > Distance[currentNode] + weight) {
-                Distance[connectedNode] = Distance[currentNode] + weight;
+    while (!myHeap.empty()) {
+        currentNode = myHeap.top(), myHeap.pop();
+        inQueue[currentNode.second] = 0;
+
+        for (int i = 0; i < graph[currentNode.second].size(); i++) {
+            connectedNode = graph[currentNode.second][i].first, weight = graph[currentNode.second][i].second;
+            if (Distance[connectedNode] > Distance[currentNode.second] + weight) {
+                Distance[connectedNode] = Distance[currentNode.second] + weight;
                 if (!inQueue[connectedNode]) {
-                    Queue.push(connectedNode), inQueue[connectedNode] = 1;
+                    myHeap.emplace(Distance[connectedNode], connectedNode), inQueue[connectedNode] = 1;
                 }
             }
         }
     }
     long long total = 0;
-    for (int i = 0; i < vertices; i++) 
+    for (int i = 0; i < vertices; i++)
         total += Distance[i];
     return total;
 }
@@ -63,10 +64,10 @@ int main() {
     cin >> testcase;
     while (testcase--) {
         cin >> vertices >> edges;
-        
+
         // Reset both Graph and Reverse Graph
         for (int i = 0; i < vertices; i++) {
-            graph[i].clear(), reverse_graph[i].clear();
+            Graph[i].clear(), reverseGraph[i].clear();
         }
 
         // Input edges to Graph and Reverse Graph
@@ -74,13 +75,13 @@ int main() {
             int head, tail, weight;
             cin >> head >> tail >> weight;
             head--, tail--;
-            graph[head].emplace_back(tail, weight);
-            reverse_graph[tail].emplace_back(head, weight);
+            Graph[head].emplace_back(tail, weight);
+            reverseGraph[tail].emplace_back(head, weight);
         }
-        
+
         long long total = 0;
-        total += ShortestPathFasterAlgorithm(0, vertices, graph);
-        total += ShortestPathFasterAlgorithm(0, vertices, reverse_graph);
+        total += ShortestPathFasterAlgorithm(0, vertices, Graph);
+        total += ShortestPathFasterAlgorithm(0, vertices, reverseGraph);
         cout << total << endl;
     }
     return 0;
