@@ -52,9 +52,13 @@ int main() {
     cin >> testcase;
     while (testcase--) {
         cin >> vertices >> edges;
+        
+        // Reset both Graph and Reverse Graph
         for (int i = 0; i < vertices; i++) {
             graph[i].clear(), reverse_graph[i].clear();
         }
+
+        // Input edges to Graph and Reverse Graph
         for (int i = 0; i < edges; i++) {
             int head, tail, weight;
             cin >> head >> tail >> weight;
@@ -62,6 +66,7 @@ int main() {
             graph[head].emplace_back(tail, weight);
             reverse_graph[tail].emplace_back(head, weight);
         }
+        
         long long total = 0;
         total += ShortestPathFasterAlgorithm(0, vertices, graph);
         total += ShortestPathFasterAlgorithm(0, vertices, reverse_graph);
