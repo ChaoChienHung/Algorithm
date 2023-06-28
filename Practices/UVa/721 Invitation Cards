@@ -16,22 +16,32 @@ References :
 
 using namespace std;
 
+// Graph & Reverse Graph : Adjacency List
 vector<pair<int, long long>> graph[Max], reverse_graph[Max];
 
+// Distance : Table used to record the distance from source to other vertices
+// inQueue : The queue used to see whether the vertice is currently in the queue or not
 long long Distance[Max];
 int inQueue[Max];
 
 long long ShortestPathFasterAlgorithm(int source, int vertices, vector<pair<int, long long>> graph[]) {
+    
+    // Initialize the distances to all other vertices to infinity
+    // There is no vertex in the queue yet, so set all the values in the inQueue to 0
     for (int i = 0; i < vertices; i++) {
         Distance[i] = INT_MAX, inQueue[i] = 0;
     }
     queue<int> Queue;
     int currentNode, connectedNode;
     long long weight;
+
+    // Insert the source into the queue and set its distance to 0
     Queue.push(source), Distance[source] = 0;
+    
     while (!Queue.empty()) {
         currentNode = Queue.front(), Queue.pop();
-        inQueue[currentNode] = 0;
+        inQueue[currentNode] = 0; 
+
         for (int i = 0; i < graph[currentNode].size(); i++) {
             connectedNode = graph[currentNode][i].first, weight = graph[currentNode][i].second;
             if (Distance[connectedNode] > Distance[currentNode] + weight) {
