@@ -11,7 +11,7 @@ Source : https://vjudge.net/problem/UVA-10044
 
 using namespace std;
 
-struct person{
+struct person {
     string name;
     int no;
     vector<struct person*> connection;
