@@ -8,46 +8,52 @@ using namespace std;
 
 typedef struct Node *link;
 
-struct Node{
+struct Node {
     char chr;
     int times;
     link left, right;
-    Node(){};
-    Node(char b){
+    Node () {};
+    Node (char b) {
         chr = b;
         times = 1;
         left = right = nullptr;
     }
 };
 
-bool cmp(link a, link b){
-    return a->times < b->times;
+bool cmp (link a, link b) {
+    return (a -> times < b -> times);
 }
 
-void traverse(link a, map<char, string> *b, stack<string> *c){
-    if(a->chr != '~'){
-        b->insert(make_pair(a->chr, c->top()));
+void traverse (link a, map<char, string> *b, stack<string> *c) {
+    if (a -> chr != '~'){
+        b -> insert(make_pair(a -> chr, c -> top()));
     }
-    else if(a){
-        if(a->left){
-            if(c->empty()) c->push("0");
-            else c->push(c->top()+'0');
-            traverse(a->left, b, c);
+    else if (a) {
+        if (a -> left) {
+            if (c -> empty()) 
+                c -> push("0");
+            else 
+                c -> push(c -> top() + '0');
+            traverse(a -> left, b, c);
         }
-        if(a->right){
-            if(c->empty()) c->push("1");
-            else c->push(c->top()+'1');
-            traverse(a->right, b, c);
+        if (a -> right) {
+            if (c -> empty()) 
+                c -> push("1");
+            else 
+                c -> push(c -> top() + '1');
+            traverse(a -> right, b, c);
         }
     }
-    if(!c->empty())c->pop();
+    if (!c -> empty())
+        c -> pop();
 }
 
 void traverse(link a){
-    if(a){
-        traverse(a->left);
-        if(a->chr != '~')cout<<a->chr<<" ";
-        traverse(a->right);
+    if (a) {
+        traverse(a -> left);
+        if(a -> chr != '~')
+            cout << a - >chr << " ";
+        traverse(a -> right);
     }
 }
 
