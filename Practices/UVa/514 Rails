@@ -3,6 +3,17 @@ UVa 514 Rails
 Language : C++
 Source : https://vjudge.net/problem/UVA-514
 解題想法 :
+由於每台火車進站後可以有兩種選擇 : 
+    1. 直接離開車站
+    2. 等待下一台火車進入車站且離開後，才離開車站
+
+因此，我們可以以 Stack 模擬出該兩種選擇，亦即 :
+    1. 將火車 push 入 Stack 後，直接 pop 出
+    2. 將火車 push 入 Stack 後，等待其他的火車 push 入並 pop出後，再 pop 出 
+
+我們以 myQueue 儲存火車的出站順序，並以 myStack 代表車站，照編號順序存入火車，並在每一輪 push 入火車，亦即火車入站時，
+檢查 myStack.top() (車站最前端的火車) 是否為 myQueue.front() 當前所指定的火車。若是則將之從 myStack (車站) 與 myQueue pop 出，
+象徵著該火車已出站。最後，我們僅需檢查 myStack (車站) 是否為空，即能明瞭我們是否能夠以測資要求的方式讓火車離開車站。
 
 References :
     1. https://www.pinghenotes.com/UVa-514-Rails/
@@ -15,7 +26,7 @@ References :
 using namespace std;
 
 int main() {
-    int num;
+    int num; 
     while (cin >> num && num) {
         int train;
         while (cin >> train && train) {
