@@ -1,0 +1,64 @@
+/*===================================================================================================================================================
+ZJ b298 老闆阿我要退貨
+Language : C++
+Source : https://zerojudge.tw/ShowProblem?problemid=b298
+解題想法 : 
+以 struct node 記錄每一家廠商的編號與其下游，並以 DFS 的方式將有問題的廠商與他的下游全數存入 unordered_set<int> bad 之中，最後再檢查 bad 是否存在測資中
+詢問的廠商即可求得解。
+
+===================================================================================================================================================*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef struct node* link;
+
+struct node {
+    int index;
+    vector<link> supply;
+};
+
+void DFS(node* root, unordered_set<int> &bad){
+    if (bad.find(root -> index) != bad.end())
+        return;
+
+    bad.insert(root -> index);
+    if (root -> supply.size()) {
+        for (int i = 0; i < root -> supply.size(); i++)
+            DFS(root -> supply[i], bad);
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    int num, supplies, problems, queries;
+    cin >> num >> supplies >> problems >> queries;
+    vector<node> record(num + 1);
+    for (int i = 1; i <= num; i++)
+        record[i].index = i;
+
+    int supplier, buyer;
+    for (int i = 0; i < supplies; i++) {
+        cin >> supplier >> buyer;
+        record[supplier].supply.push_back(&record[buyer]);
+    }
+    int problem;
+    unordered_set<int> bad;
+    for (int i = 0; i < problems; i++) {
+        cin >> problem;
+        DFS(&record[problem], bad);
+    }
+
+    int ask;
+    for (int i = 0; i < queries; i++) {
+        cin >> ask;
+        if (bad.find(ask) != bad.end())
+            cout << "TUIHUOOOOOO" << endl;
+        else
+            cout << "YA~~" << endl;
+    }
+}
