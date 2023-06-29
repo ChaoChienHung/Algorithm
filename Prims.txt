@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+#define SIZE 100
+
+using namespace std;
+
+int main(){
+    int points, graph[SIZE][SIZE], head, tail, smallest, total, count;
+    bool check;
+    cin>>points;
+    smallest = 10000;
+    for (int i = 0; i < points; ++i) {
+        for (int j = 0; j < points; ++j) {
+            cin>>graph[i][j];
+            if(graph[i][j]!=0 && graph[i][j]<smallest){
+                smallest = graph[i][j];
+                head = i;
+                tail = j;
+            }
+        }
+    }
+    vector<int> usedPoints = {head, tail};
+    total = smallest;
+    while(true){
+        smallest = 10000;
+        check = false;
+        for (int i = 0; i < usedPoints.size(); ++i) {
+            for (int j = 0; j < points; ++j) {
+                if(graph[usedPoints[i]][j]!=0 && graph[usedPoints[i]][j]<smallest && find(usedPoints.begin(), usedPoints.end(), j) == usedPoints.end()){
+                    smallest = graph[usedPoints[i]][j];
+                    tail = j;
+                    check = true;
+                }
+            }
+        }
+        if(!check) break;
+        usedPoints.push_back(tail);
+        total += smallest;
+    }
+    if(usedPoints.size()==points) cout<<total<<endl;
+    else cout<<"Not Connected"<<endl;
+    return 0;
+}

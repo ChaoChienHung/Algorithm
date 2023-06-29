@@ -1,0 +1,96 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <stack>
+
+using namespace std;
+
+typedef struct Node *link;
+
+struct Node{
+    char chr;
+    int times;
+    link left, right;
+    Node(){};
+    Node(char b){
+        chr = b;
+        times = 1;
+        left = right = nullptr;
+    }
+};
+
+bool cmp(link a, link b){
+    return a->times < b->times;
+}
+
+void traverse(link a, map<char, string> *b, stack<string> *c){
+    if(a->chr != '~'){
+        b->insert(make_pair(a->chr, c->top()));
+    }
+    else if(a){
+        if(a->left){
+            if(c->empty()) c->push("0");
+            else c->push(c->top()+'0');
+            traverse(a->left, b, c);
+        }
+        if(a->right){
+            if(c->empty()) c->push("1");
+            else c->push(c->top()+'1');
+            traverse(a->right, b, c);
+        }
+    }
+    if(!c->empty())c->pop();
+}
+
+void traverse(link a){
+    if(a){
+        traverse(a->left);
+        if(a->chr != '~')cout<<a->chr<<" ";
+        traverse(a->right);
+    }
+}
+
+int main(){
+    string input;
+    bool check;
+    getline(cin, input);
+    vector<link> dict;
+    for (int i = 0; i < input.size(); ++i) {
+        check = false;
+        for (int j = 0; j < dict.size(); ++j) {
+            if(dict.at(j)->chr == input[i]){
+                check = true;
+                dict.at(j)->times++;
+                break;
+            }
+        }
+        if(!check){
+            dict.push_back(new Node(input[i]));
+        }
+    }
+    sort(dict.begin(), dict.end(), cmp);
+    link head;
+    while(dict.size()>1){
+        link temp = new Node();
+        temp->chr = '~';
+        temp->times = dict.at(0)->times + dict.at(1)->times;
+        temp->left = dict.at(0);
+        temp->right = dict.at(1);
+        dict.push_back(temp);
+        dict.erase(dict.begin());
+        dict.erase(dict.begin());
+        sort(dict.begin(), dict.end(), cmp);
+    }
+    head = dict.at(0);
+    map<char, string> huffman;
+    stack<string> code;
+    traverse(head, &huffman, &code);
+    for (auto const h : huffman) cout<<h.first<<":"<<h.second<<" ";
+    return 0;
+}
+
+/*
+Huffman
+BCAADDDCCACACAC
+*/

@@ -1,0 +1,155 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+
+using namespace std;
+
+typedef struct Node *link;
+
+struct Node{
+    int val, size;
+    link next, parent;
+    Node(){};
+    Node(int a){
+        val = a;
+        size = 1;
+        next = nullptr;
+        parent = nullptr;
+    }
+};
+
+typedef struct Edge* edgeLink;
+
+struct Edge{
+    int head, tail, weight;
+    Edge(){};
+    Edge(int a, int b, int c){
+        head = a;
+        tail = b;
+        weight = c;
+    }
+};
+
+bool cmp(edgeLink a, edgeLink b){
+    return a->weight < b->weight;
+}
+
+void setParent(link a, link b){
+    if(a->size >= b->size ){
+        link cursor = a->parent, parent = b->parent;
+        while(cursor->next) {
+            cursor = cursor->next;
+        }
+        cursor->next = parent;
+        while(cursor){
+            cursor->parent = a->parent;
+            cursor = cursor->next;
+        }
+    }
+    else{
+        a->parent = b->parent;
+        link cursor = b->parent;
+        link parent = a->parent;
+        while(cursor->next) {
+            cursor = cursor->next;
+        }
+        cursor->next = parent;
+        while(cursor){
+            cursor->parent = b->parent;
+            cursor = cursor->next;
+        }
+    }
+}
+
+
+int main(){
+    int points, lines, head, tail, weight, total = 0, count = 0;
+    cin>>points>>lines;
+    edgeLink Lines[lines];
+    int graph[points][points];
+    for (int i = 0; i < points; ++i) {
+        for (int j = 0; j < points; ++j) {
+            graph[i][j] = 0;
+        }
+    }
+    vector<link> Union;
+    for (int i = 0; i < lines; ++i) {
+        cin>>head>>tail>>weight;
+        graph[head][tail] = graph[tail][head] = weight;
+        Lines[i] = new Edge(head, tail, weight);
+    }
+    for (int i = 0; i < points; ++i) {
+        link temp = new Node(i);
+        temp->parent = temp;
+        Union.push_back(temp);
+    }
+    sort(Lines, Lines+lines, cmp);
+    cout<<"Edges of MST are :\n";
+    for (int i = 0; i < lines; ++i) {
+        if(Union[Lines[i]->head]->parent == Union[Lines[i]->tail]->parent) continue;
+        else{
+            cout<<Lines[i]->head<<" - "<<Lines[i]->tail<<endl;
+            total += Lines[i]->weight;
+            count += 1;
+            setParent(Union[Lines[i]->head], Union[Lines[i]->tail]);
+        }
+    }
+    cout<<endl;
+    if(count != points - 1){
+        cout<<"It's not connected"<<endl<<endl;
+    }
+    else{
+        cout<<"Weight of MST is "<<total<<endl<<endl;
+    }
+    cout<<"It's adjacency graph is :\n";
+    for (int i = 0; i < points; ++i) {
+        for (int j = 0; j < points; ++j) {
+            cout<<graph[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    return 0;
+}
+
+/*
+3 3
+0 1 3
+0 2 3
+1 2 4
+
+7 10
+1 4 1
+1 2 10
+3 6 9
+6 4 2
+5 0 3
+2 6 8
+4 3 7
+4 5 6
+3 2 5
+1 0 5
+1 6 4
+
+9 14
+0 1 4
+0 7 8
+1 2 8
+1 7 11
+2 3 7
+2 8 2
+2 5 4
+3 4 9
+3 5 14
+4 5 10
+5 6 2
+6 7 1
+6 8 6
+7 8 7
+
+5 4
+0 1 7
+0 2 6
+1 2 8
+3 4 5
+*/
