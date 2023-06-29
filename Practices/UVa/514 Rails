@@ -1,0 +1,38 @@
+/*=================================================================================================================================================
+UVa 514 Rails
+Language : C++
+Source : https://vjudge.net/problem/UVA-514
+解題想法 :
+
+References :
+    1. https://www.pinghenotes.com/UVa-514-Rails/
+    2. https://www.larrysprognotes.com/UVa-514/
+
+=================================================================================================================================================*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    int num;
+    while (cin >> num && num) {
+        int train;
+        while (cin >> train && train) {
+            stack<int> myStack;
+            queue<int> myQueue;
+            myQueue.push(train);
+            for (int i = 1; i < num; i++)
+                cin >> train, myQueue.push(train);
+
+            for (int i = 1; i <= num; i++) {
+                myStack.push(i);
+                while (!myStack.empty() && myStack.top() == myQueue.front())
+                    myQueue.pop(), myStack.pop();
+
+            }
+            cout << (myStack.empty() ? "Yes" : "No") << endl;
+        }
+        cout << endl;
+    }
+}
