@@ -1,0 +1,55 @@
+/*====================================================================================================================================================
+UVa 719 Glass Beads
+Language : C++
+Source : https://vjudge.net/problem/UVA-719
+
+====================================================================================================================================================*/
+
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    string input;
+    int Cases;
+    cin >> Cases;
+    while(Cases--) {
+        cin >> input;
+        bool check = false;
+        int size = (int)input.size();
+        input.insert(input.begin(), ' ');
+        for (int i = 1; i <= size; ++i)
+            input += input[i];
+        int indexI, indexJ;
+        for (indexI = 1, indexJ = 2; indexI <= size && indexJ <= size;) {
+            for (int k = 0;; ++k) {
+                if (k >= size) {
+                    check = true;
+                    break;
+                }
+                if (input[indexI + k] < input[indexJ + k]) {
+                    indexJ = indexJ + k + 1;
+                    if (indexI == indexJ) ++indexJ;
+                    break;
+                } 
+                else if (input[indexI + k] > input[indexJ + k]) {
+                    indexI = indexI + k + 1;
+                    if (indexI == indexJ) ++indexI;
+                    break;
+                }
+                if (indexI + k >= 2 * size) {
+                    indexI = size + 1;
+                    break;
+                }
+                if (indexJ + k >= 2 * size) {
+                    indexJ = size + 1;
+                    break;
+                }
+            }
+            if (check) 
+                break;
+        }
+        cout << min(indexI, indexJ) << endl;
+    }
+    return 0;
+}
