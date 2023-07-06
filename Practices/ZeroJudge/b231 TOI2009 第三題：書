@@ -3,7 +3,14 @@ ZeroJudge b231 TOI2009 第三題：書
 Language : C++
 Source : https://zerojudge.tw/ShowProblem?problemid=b231
 解題想法 : 
-
+由於每一本書必須先印刷再裝訂，並且工廠有 n 台裝訂機但只有一台印刷機，而印刷機同時只能印一本書，且需印完一本書後才能印下一本，如此我們可得知 : 
+    1. 由於只有裝訂機能平行進行，印刷機則不行，因此我們先以每本書的裝訂時間做排序，最久的則放 Heap 中最頂端，讓需要裝訂時間最久的先做，以此最大化平行運作的效率。
+       而由於印刷機無法平行運作，因此無論如何排序，都不影響所有書本所累積的印刷時間
+    2. 我們可知假如第 n 本書在 x = 0 時印刷完成且開始裝訂，則第 n + 1 本書需要在 x = (0 + 第 n + 1 本書的印刷時間)時才能開始裝定。然而若第 n 本書的裝訂時間  
+       >= (第 n + 1 本的印刷時間 + 第 n + 1 本書的裝訂時間)，則 answer 仍為第 n 本書的 printTime 加上第 n 本書的裝訂時間。但是我們仍需考慮(第 n + 1 本書的印
+       刷時間 + 第 n + 2 本書的印刷時間 + 第 n + 2 本書的裝訂時間)是否會 >= (第 n + 1 本的印刷時間 + 第 n + 1 本書的裝訂時間)，以此類推。因此實際上我們需要把
+       每次的印刷時間累積，並加上該本書的裝訂時間，再與當前紀錄的花費時間(answer)做比較，若大於則代表累積至(n + y)本書的印刷時間 + 第(n + y)本書的裝訂時間 > 
+       第 n 本書的裝訂時間，因此取代之成為新的 answer
 
 References : 
     1. https://yuihuang.com/zj-b231/
@@ -14,17 +21,17 @@ References :
 
 using namespace std;
 
-int main(){
+int main() {
     int num, print, bind;
     priority_queue <pair<int, int> > myHeap;
-    while (cin >> num){
-        for (int i = 0; i < num; i++){
+    while (cin >> num) {
+        for (int i = 0; i < num; i++) {
             cin >> print >> bind;
             myHeap.emplace(bind, print);
         }
-        int printTime = 0; //累計花費的印刷時間
+        int printTime = 0; // 累計花費的印刷時間
         int answer = 0;
-        while (!myHeap.empty()){
+        while (!myHeap.empty()) {
             printTime += myHeap.top().second;
             answer = max(answer, printTime + myHeap.top().first);
             myHeap.pop();
