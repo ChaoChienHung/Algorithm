@@ -3,9 +3,10 @@ TIOJ 1202 重疊的天際線
 Language : C++
 Source : https://tioj.ck.tp.edu.tw/problems/1202
 解題想法 : 
-
-
-
+此題的要求是輸出「每個高度有所變化的位置」與其「高度」，而高度變化僅會出現在某棟建築物的起點或終點。因此我們可以以 Heap 事先將每棟建築物的起始與結尾的 x 座標(由於
+我們需要了解一棟建築物的起始與結尾，因此每棟建築物都需要同時存入(起始點, 1, 高度)與(結尾, -1, 高度)，1 代表起點，-1 則代表終點，以便從 Heap 中取出時知道該點是作
+為一棟建築物的起點或終點)作排序，並從 Heap 中依序將之取出。若該點為建築物之起點，則將其高度存入 Multiset 中，此 Multiset 代表著現階段 Traverse 到的所有建築物之
+中，建築物的高度。反之，若該點為建築物之終點，則將之從 MultiSet 移除。最後紀錄 MultiSet 的最尾端值(當前的最高高度)，當高度有所變化時，便將之印出。
 
 References : 
     1. https://double112233.github.io/TIOJ-1202.html
@@ -16,7 +17,7 @@ References :
 
 using namespace std;
 
-int main(){
+int main() {
     multiset<int> myMultiset;
     priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<>> myHeap;
 
