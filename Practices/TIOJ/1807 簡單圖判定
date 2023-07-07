@@ -3,7 +3,12 @@ TIOJ 1807 簡單圖判定
 Language : C++
 Source : https://tioj.ck.tp.edu.tw/problems/1807
 解題想法 : 
+只要圖滿足以下條件皆為簡單圖 :
+    1. 無重邊(multi-edge)
+    2. 無自環(self-loop)
 
+因此，一個簡單圖其邊數最多為(vertices * (vertices - 1) / 2)，亦即一完全圖邊數的公式。所以我們首先檢查其邊數是否大於該數，接著檢查每個點是否有重複的邊與是否有連
+接自己的邊即可
 
 References : 
     1. https://yuihuang.com/tioj-1807/
@@ -23,13 +28,17 @@ int main() {
     map<int, set<int>> record;
 
     cin >> vertices >> edges;
+
+    // 檢查其邊數是否大於一個簡單圖所能擁有的最大邊數
     if (edges > (vertices * (vertices - 1) / 2)) {
         cout << "Yes" << endl;
         return 0;
     }
     for (int i = 0; i < edges; i++) {
         cin >> pointA >> pointB;
-        if (pointA == pointB || (record[pointB].count(pointA) && record[pointA].count(pointB)) ){
+        
+        // 檢查是否有自環或重邊
+        if (pointA == pointB || (record[pointB].count(pointA) && record[pointA].count(pointB)) ) {
             cout << "Yes" << endl;
             break;
         }
