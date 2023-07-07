@@ -1,0 +1,41 @@
+/*==================================================================================================================================================
+TIOJ 1807 簡單圖判定
+Language : C++
+Source : https://tioj.ck.tp.edu.tw/problems/1807
+解題想法 : 
+
+
+References : 
+    1. https://yuihuang.com/tioj-1807/
+
+==================================================================================================================================================*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    int edges, vertices, pointA, pointB;
+    map<int, set<int>> record;
+
+    cin >> vertices >> edges;
+    if (edges > (vertices * (vertices - 1) / 2)) {
+        cout << "Yes" << endl;
+        return 0;
+    }
+    for (int i = 0; i < edges; i++) {
+        cin >> pointA >> pointB;
+        if (pointA == pointB || (record[pointB].count(pointA) && record[pointA].count(pointB)) ){
+            cout << "Yes" << endl;
+            break;
+        }
+        record[pointA].insert(pointB);
+        record[pointB].insert(pointA);
+    }
+    cout << "yes" << endl;
+    return 0;
+}
