@@ -1,0 +1,42 @@
+/*=================================================================================================================================================
+UVa 10038 Jolly Jumpers
+Language : C++
+Source : https://vjudge.net/problem/UVA-10038
+
+需要注意的點 : 
+  1. 輸出格式
+
+=================================================================================================================================================*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    int num, prev, current;
+    while (cin >> num) {
+        if (num == 1) {
+            cin >> prev;
+            cout << "Jolly" << endl;
+            continue;
+        }
+        cin >> prev;
+        vector<bool> check(num - 1, false);
+        for (int i = 1; i < num; i++) {
+            cin >> current;
+            int diff = abs(current - prev);
+            if (diff && diff < num)
+                check[diff - 1] = true;
+            prev = current;
+        }
+        if (!check.empty() && find(check.begin(), check.end(), false) == check.end())
+            cout << "Jolly" << endl;
+        else
+            cout << "Not jolly" << endl;
+    }
+    return 0;
+}
