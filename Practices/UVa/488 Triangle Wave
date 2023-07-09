@@ -1,0 +1,41 @@
+/*=================================================================================================================================================
+UVa 488 Triangle Wave
+Language : C++
+Source : https://vjudge.net/problem/UVA-488
+
+需要注意的點 : 
+  1. 輸出格式
+
+=================================================================================================================================================*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    
+    int cases, frequencies, height;
+    cin >> cases, cin.ignore();
+    for (int i = 0; i < cases; i++) {
+        cin.ignore();
+        cin >> height >> frequencies;
+        for (int j = 0; j < frequencies; j++) {
+            for (int k = 1; k <= height; k++) {
+                for (int l = 0; l < k; l++)
+                    cout << k;
+                cout << endl;
+            }
+            for (int k = height - 1; k > 0; k--) {
+                for (int l = 0; l < k; l++)
+                    cout << k;
+                cout << endl;
+            }
+            if (i < cases - 1 || j < frequencies - 1)
+                cout << endl;
+        }
+    }
+    return 0;
+}
