@@ -13,7 +13,7 @@ int main() {
     string input;
     int Cases;
     cin >> Cases;
-    while(Cases--) {
+    while (Cases--) {
         cin >> input;
         bool check = false;
         int size = (int)input.size();
