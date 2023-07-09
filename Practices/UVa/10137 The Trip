@@ -24,7 +24,7 @@ using namespace std;
 int main(){
     int person;
     double money;
-    while(cin >> person && person != 0){
+    while (cin >> person && person != 0) {
         int record[person];
         int sum = 0;
         for (int i = 0; i < person; i++) {
