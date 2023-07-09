@@ -1,0 +1,28 @@
+/*=====================================================================================================================================================
+UVa 10107 What is the Median?
+Language : C++
+Source : https://vjudge.net/problem/UVA-10107
+
+解題想法 : 
+以一個 vector<long long> series 紀錄當前的數列，並在每一次輸入新的值時，以 upper_bound 找到大於該輸入值的值的位置，並將之插入，即可保證在每次輸入新值後仍能保持
+該數列已排序好。最後以 size 紀錄該數列大小，並判斷其奇偶。若為奇數則輸出 series[size / 2]，否則輸出 (series[size / 2] + series[size / 2 - 1]) / 2。
+
+=====================================================================================================================================================*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    long long value, size = 0;
+    vector<long long> series;
+    while (cin >> value) {
+        size++;
+        series.insert(upper_bound(series.begin(), series.end(), value), value);
+        if (size % 2)
+            cout << series[size / 2] << endl;
+        else
+            cout << (series[size / 2] + series[size / 2 - 1]) / 2 << endl;
+    }
+    return 0;
+}
