@@ -11,22 +11,22 @@ Source : https://vjudge.net/problem/UVA-10324
 
 using namespace std;
 
-int main(){
+int main() {
     string s;
     int times, first, second, Cases = 0;
-    while(cin >> s){
+    while (cin >> s) {
         cout << "Case " << ++Cases << ':' << endl;
         int pre[s.size()];
         pre[0] = s[0] - '0';
-        for(int i = 1; i < s.size(); i++){
+        for (int i = 1; i < s.size(); i++) {
             pre[i] = pre[i - 1] + s[i] - '0';
         }
         cin >> times;
-        while(times--){
+        while (times--) {
             cin >> first >> second;
-            if(first == second)
+            if (first == second)
                 cout << "Yes" << endl;
-            else if((pre[max(first, second)] - pre[min(first, second)] + (s[min(first, second)] - '0')) % (max(first, second) - min(first, second) + 1) == 0)
+            else if ((pre[max(first, second)] - pre[min(first, second)] + (s[min(first, second)] - '0')) % (max(first, second) - min(first, second) + 1) == 0)
                 cout << "Yes" << endl;
             else
                 cout << "No" << endl;
