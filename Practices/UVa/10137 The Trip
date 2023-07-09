@@ -9,7 +9,7 @@ Source : https://vjudge.net/problem/UVA-10137
 最後因為總和是轉移量的兩倍(因為會重複計算)，而且一開始有乘以100，所以答案需要除以200
 
 需要注意的點 : 
-1. 有浮點數誤差的問題
+    1. 有浮點數誤差的問題
 
 References : 
     1. http://kaibro.logdown.com/posts/256635-uva-10137-the-trip
