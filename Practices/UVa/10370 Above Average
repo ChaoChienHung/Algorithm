@@ -4,7 +4,7 @@ Language : C++
 Source : https://vjudge.net/problem/UVA-10370
 解題想法 : 
 以 vector<int> grades 記錄所有學生的分數，並以 total 加總所有學生的分數，再以 average 得到學生的平均數，最後再 traverse 一遍 grades，將所有學生的分數與 
-average 做比較，將高於 average 的學生除以 students 即可
+average 做比較，將高於 average 的學生除以 students 即可。
 
 ==================================================================================================================================================*/
 
