@@ -1,0 +1,38 @@
+/*==================================================================================================================================================
+UVa 10260 Soundex
+Language : C++
+Source : https://vjudge.net/problem/UVA-10260
+解題想法 : 
+以 map<char, int> soundex 將每個字母對應的值記錄，其中 A, E, I, O, U, H, W, Y 記為 0。再以 for 迴圈將 input 的每個字母 traverse，以 prev 記錄前一個字母的值
+，若不相同且該字母所對應的值不為 0，則加入 answer 之中。
+
+==================================================================================================================================================*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    map<char, int> soundex;
+    vector<string> dict(7);
+    string input;
+    dict[0] = "AEIOUHW", dict[1] = "BFPV", dict[2] = "CGJKQSXZ", dict[3] = "DT", dict[4] = "L", dict[5] = "MN", dict[6] = "R";
+    for (int i = 0; i < dict.size(); i++)
+        for (int j = 0; j < dict[i].size(); j++)
+            soundex[dict[i][j]] = i;
+
+    while (cin >> input) {
+        string answer;
+        int prev = -1, current;
+        for (char a : input) {
+            current = soundex[a];
+            if (current != prev) {
+                prev = current;
+                if (current != 0)
+                    answer += current + '0';
+            }
+        }
+        cout << answer << endl;
+    }
+    return 0;
+}
