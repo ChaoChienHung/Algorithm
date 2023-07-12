@@ -1,0 +1,34 @@
+/*==================================================================================================================================================
+UVa 10082 WERTYU
+Language : C++
+Source : https://vjudge.net/problem/UVA-10082
+
+解題想法 : 
+事先把每排字母依序存入 keyboard 中，然後在 traverse 測資時，找到該字母的 index 並輸出 index - 1 的字母
+
+需要注意的點 : 
+  1. 未存入 keyboard 中的字母則直接輸出原測資的字母即可
+  2. 每一排的第一個字母不會出現在測資當中(`, Q, A, Z)，因此可以把每排字母都串成一排字串
+
+References :
+  1. https://yuihuang.com/zj-c054/
+
+==================================================================================================================================================*/
+
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    string input, keyboard = "`1234567890-=QWERTYUIOP[]\\ASDFGHJKL;'ZXCVBNM,./";
+    while (getline(cin, input)) {
+        for (auto i : input) {
+            if (keyboard.find(i) == string::npos)
+                cout << i;
+            else
+                cout << keyboard[keyboard.find(i) - 1];
+        }
+        cout << endl;
+    }
+    return 0;
+}
