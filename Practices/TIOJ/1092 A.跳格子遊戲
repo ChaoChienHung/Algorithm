@@ -1,0 +1,47 @@
+/*==================================================================================================================================================
+TIOJ 1092 A.跳格子遊戲
+Language : C++
+Source : https://tioj.ck.tp.edu.tw/problems/1092
+解題想法 : 
+
+
+References : 
+    1. https://yuihuang.com/tioj-1092/
+
+==================================================================================================================================================*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    int edges, vertices, head, tail, current;
+    string player1;
+    while (cin >> vertices >> edges && vertices) {
+        vector<int> outDegree(vertices, 0), winner(vertices, 1);
+        vector<vector<int>> adjacencyList(vertices);
+        for (int i = 0; i < edges; i++) {
+            cin >> head >> tail;
+            head--, tail--;
+            outDegree[head]++;
+            adjacencyList[tail].push_back(head);
+        }
+        queue<int> myQueue;
+        myQueue.push(vertices - 1);
+        while (!myQueue.empty()) {
+            current = myQueue.front(), myQueue.pop();
+            for (int a : adjacencyList[current]) {
+                if (winner[current] == 1)
+                    winner[a] = 0;
+                if (--outDegree[a] == 0)
+                    myQueue.push(a);
+            }
+        }
+        cin >> player1;
+        if (player1 == "Moumou")
+            winner[0] ^= 1;
+        cout <<  ((winner[0]) ? "Mimi" : "Moumou") << endl;
+
+    }
+    return 0;
+}
