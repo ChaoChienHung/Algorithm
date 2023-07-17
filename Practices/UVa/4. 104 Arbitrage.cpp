@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void printPath(vector<vector<vector<int>>> &paths, int step, int i, int j){
+    if(step == 0){
+        cout << i + 1 << " " << j + 1;
+        return;
+    }
+    printPath(paths, step - 1, i, paths[step][i][j]);
+    cout << " " << j + 1;
+}
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    int dimension;
+    while(cin >> dimension){
+        vector<vector<double>> conversionTable(dimension, vector<double>(dimension, 0));
+        for(int i = 0 ; i < dimension ; ++i){
+            for(int j = 0 ; j < dimension ; ++j){
+                if(i == j){
+                    conversionTable[i][j] = 1;
+                    continue;
+                }
+                cin >> conversionTable[i][j];
+            }
+        }
+
+        vector<vector<vector<double>>> values(dimension, vector<vector<double>>(dimension, vector<double>(dimension)));
+        vector<vector<vector<int>>> paths(dimension, vector<vector<int>>(dimension, vector<int>(dimension, -1)));
+        values[0] = conversionTable;
+
+        int item = -1, step = -1;
+        for(int t = 1 ; t < dimension && item == -1 ; ++t){
+            for(int i = 0 ; i < dimension ; ++i){
+                for(int j = 0 ; j < dimension ; ++j){
+                    values[t][i][j] = -1.0;
+                    for(int k = 0 ; k < dimension ; ++k ){
+                        double newRate = values[t-1][i][k] * conversionTable[k][j];
+                        if(newRate > values[t][i][j]){
+                            values[t][i][j] = newRate;
+                            paths[t][i][j] = k;
+                        }
+                    }
+                }
+                if(values[t][i][i] > 1.01){
+                    item = i;
+                    step = t;
+                    break;
+                }
+            }
+        }
+
+        if(item == -1){
+            cout << "no arbitrage sequence exists" << endl;
+            continue;
+        }
+
+        printPath(paths, step, item, item);
+        cout << endl;
+    }
+    return 0;
+}
+
+// 題目 : https://onlinejudge.org/external/1/104.pdf
+
+// Reference : https://knightzone.studio/2019/04/02/4181/uva%EF%BC%9A104%EF%BC%8Darbitrage/
