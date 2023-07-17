@@ -3,7 +3,8 @@ TIOJ 1795 咕嚕咕嚕呱啦呱啦
 Language : C++
 Source : https://tioj.ck.tp.edu.tw/problems/1795
 解題想法 : 
-
+由於每條邊的邊權非 0 即 1，因此我們可以合理推斷，任何介於最小生成樹與最大生成樹之間的數，都是必定存在。因此，我們只要找到該圖的最小與最大生成樹，並判斷 k 是否介於
+該範圍內即可
 
 References : 
     1. https://miohitokiri5474.github.io/code/TIOJ-1795/
@@ -61,7 +62,7 @@ int Kruskal() {
     int answer = 0;
     for (int i = 0; i < Edges.size(); ++i) {
         int head = Find(Edges[i].head), tail = Find(Edges[i].tail);
-        if(head == tail) 
+        if (head == tail) 
             continue;
         answer += Edges[i].weight;
         setUnion(head, tail);
