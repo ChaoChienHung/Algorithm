@@ -1,3 +1,15 @@
+/*==================================================================================================================================================
+TIOJ 1795 咕嚕咕嚕呱啦呱啦
+Language : C++
+Source : https://tioj.ck.tp.edu.tw/problems/1795
+解題想法 : 
+
+
+References : 
+    1. https://miohitokiri5474.github.io/code/TIOJ-1795/
+
+==================================================================================================================================================*/
+
 #include <bits/stdc++.h>
 #define MaxVertices 100000
 #define MaxEdges 300000
@@ -75,7 +87,3 @@ int main(){
 
     return 0;
 }
-
-// 題目 : https://tioj.ck.tp.edu.tw/problems/1795
-
-// Reference : https://miohitokiri5474.github.io/code/TIOJ-1795/
