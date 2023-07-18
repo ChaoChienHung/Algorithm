@@ -1,0 +1,76 @@
+#include<bits/stdc++.h>
+#define Infinity 1e9
+#define Max 505
+
+using namespace std;
+
+int nodes, edges, source, target;
+int graph[Max][Max];
+bool mask[Max][Max];
+int Distance1[Max], Distance2[Max];
+
+void Dijkstra(int Distance[]){
+    bool travel[Max] = {};
+    for (int i = 0; i < nodes; i++)
+        Distance[i] = Infinity;
+    Distance[source] = 0;
+
+    for (int i = 0; i < nodes; i++){
+        int currentNode = -1, minimalDistance = Infinity;
+        for (int j = 0; j < nodes; j++)
+            if (!travel[j] && minimalDistance > Distance[j])
+                currentNode = j, minimalDistance = Distance[j];
+        if (currentNode == -1)
+            break;
+        travel[currentNode] = true;
+        for (int j = 0; j < nodes; j++)
+            if (!travel[j] && !mask[currentNode][j])
+                Distance[j] = min(Distance[j], Distance[currentNode] + graph[currentNode][j]);
+    }
+}
+void BackTrack(){
+    bool travel[Max] = {};
+    queue<int> Queue;
+    Queue.push(target);
+    travel[target] = true;
+    while (!Queue.empty()){
+        int current = Queue.front();
+        Queue.pop();
+        for (int i = 0; i < nodes; i++){
+            if (Distance1[current] == Distance1[i] + graph[i][current]){
+                mask[i][current] = true;
+                if (!travel[i])	Queue.push(i);
+                travel[i] = true;
+            }
+        }
+    }
+}
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    while ((cin >> nodes >> edges) && !(nodes == 0 && edges == 0)){
+        cin >> source >> target;
+        for (int i = 0; i < nodes; i++){
+            for (int j = 0; j < nodes; j++)
+                graph[i][j] = Infinity;
+            graph[i][i] = 0;
+        }
+        memset(mask, false, sizeof(mask));
+        for (int i = 0; i < edges; i++){
+            int head, tail, weight;
+            cin >> head >> tail >> weight;
+            graph[head][tail] = weight;
+        }
+        Dijkstra(Distance1);
+        BackTrack();
+        Dijkstra(Distance2);
+        cout << (Distance2[target] == 1e9 ? -1 : Distance2[target]) << endl;
+    }
+    return 0;
+}
+
+// 題目 : https://vjudge.net/problem/UVA-12144
+
+// Reference : https://github.com/Sharknevercries/Online-Judge/blob/master/UVA/Volume%20XXI/12144%20Almost%20Shortest%20Path.cpp
